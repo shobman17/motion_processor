@@ -1,0 +1,14 @@
+Analysis & Synthesis Status : Successful - Sun May 05 18:47:36 2024
+Quartus Prime Version : 18.1.0 Build 625 09/12/2018 SJ Lite Edition
+Revision Name : madgwick_processor
+Top-level Entity Name : madgwick
+Family : Cyclone IV E
+Total logic elements : 15,138
+    Total combinational functions : 15,138
+    Dedicated logic registers : 0
+Total registers : 0
+Total pins : 256
+Total virtual pins : 0
+Total memory bits : 0
+Embedded Multiplier 9-bit elements : 94
+Total PLLs : 0

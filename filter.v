@@ -1,0 +1,121 @@
+// this file implements a madgwick filter using accelerometer and gyroscope values only
+// a quaternion library and a half precision flaoting point library is required
+// implementation is in form of an ALU hence no clock is required. A clock will be added to a wrapper
+// input is assumed to be in half precision float format (FP16 - IEEE 754)
+
+`timescale 1 ps / 1 ps
+module madgwick(in_w, in_i, in_j, in_k, accel_x, accel_y, accel_z, gyro_x, gyro_y, gyro_z, beta, samplePeriod, out_w, out_i, out_j, out_k);
+
+// port definitions
+input[15:0] in_w, in_i, in_j, in_k; // initial quaternion
+input[15:0] accel_x, accel_y, accel_z; // any units since it will be normalized 
+input[15:0] gyro_x, gyro_y, gyro_z; // should be in rad/s
+input[15:0] beta, samplePeriod; // to be defined by NIOS controller
+output[15:0] out_w, out_i, out_j, out_k; // output quaternion
+
+// internal wires
+wire[15:0] zero_norm, accel_x_norm, accel_y_norm, accel_z_norm;
+wire[15:0] f0, f1, f2, fik, fwj, f01, f02, fwi, fjk, f11, f12, fii, fjj, f21, f22, f23;
+wire[5:0] flags_fik, flags_fwj, flags_f01, flags_f02, flags_f0, flags_fwi, flags_fjk, flags_f11, flags_f12, flags_f1, flags_fii, flags_fjj, flags_f21, flags_f22, flags_f23, flags_f2;
+wire[15:0] j00, j10, j20, j30, j01, j11, j21, j31, j02, j12, j22, j32;
+wire[5:0] flags_j00, flags_j10, flags_j20, flags_j30, flags_j11, flags_j31, flags_j12, flags_j22;
+wire[15:0] step_w, step_w1, step_w2, step_w3, step_w4, step_w5;
+wire[5:0] flags_stepw1, flags_stepw2, flags_stepw3, flags_stepw4, flags_stepw5;
+wire[15:0] step_i, step_i1, step_i2, step_i3, step_i4, step_i5;
+wire[5:0] flags_stepi1, flags_stepi2, flags_stepi3, flags_stepi4, flags_stepi5;
+wire[15:0] step_j, step_j1, step_j2, step_j3, step_j4, step_j5;
+wire[5:0] flags_stepj1, flags_stepj2, flags_stepj3, flags_stepj4, flags_stepj5;
+wire[15:0] step_k, step_k1, step_k2, step_k3, step_k4, step_k5;
+wire[5:0] flags_stepk1, flags_stepk2, flags_stepk3, flags_stepk4, flags_stepk5;
+wire[15:0] qdot_w, qdot_w1, qdot_w2, qdot_w3, qdot_i, qdot_i1, qdot_i2, qdot_i3, qdot_j, qdot_j1, qdot_j2, qdot_j3, qdot_k, qdot_k1, qdot_k2, qdot_k3;  
+wire[15:0] out_w1, out_w2, out_i1, out_i2, out_j1, out_j2, out_k1, out_k2; 
+
+// constants in half precision
+localparam [15:0] two = 16'b0100000000000000;
+localparam [15:0] four = 16'b0100010000000000;
+localparam [15:0] minustwo = 16'b1100000000000000;
+localparam [15:0] minusfour = 16'b1100010000000000;
+localparam [15:0] zero = 16'b0;
+localparam [15:0] half = 16'b0011100000000000;
+
+//logic
+
+// normalise accelerometer readings
+normalise_quat accel_norm(zero, accel_x, accel_y, accel_z, zero_norm, accel_x_norm, accel_y_norm, accel_z_norm);
+
+// form f vector
+// f0
+fp_mul f_ik(in_i, in_k, fik, flags_fik);
+fp_mul f_wj(in_w, in_j, fwj, flags_fwj);
+fp_as f_01(fik, fwj, 1'b1, f01, flags_f01);
+fp_mul f_02(f01, two, f02, flags_f02);
+fp_as f_0(f02, accel_x_norm, 1'b1, f0, flags_f0);
+// f1
+fp_mul f_wi(in_w, in_i, fwi, flags_fwi);
+fp_mul f_jk(in_j, in_k, fjk, flags_fjk);
+fp_as f_11(fwi, fjk, 1'b0, f11, flags_f11);
+fp_mul f_12(f11, two, f12, flags_f12);
+fp_as f_1(f12, accel_y_norm, 1'b1, f1, flags_f1);
+// f2
+fp_mul f_ii(in_i, in_i, fii, flags_fii);
+fp_mul f_jj(in_j, in_j, fjj, flags_fjj);
+fp_as f_21(fii, fjj, 1'b0, f21, flags_f21);
+fp_as f_22(half, f21, 1'b1, f22, flags_f22);
+fp_mul f_23(f22, two, f23, flags_f23);
+fp_as f_2(f23, accel_z_norm, 1'b1, f2, flags_f2);
+
+// form j matrix
+fp_mul j_00(minustwo, in_j, j00, flags_j00);
+fp_mul j_10(two, in_k, j10, flags_j10);
+fp_mul j_20(minustwo, in_w, j20, flags_j20);
+fp_mul j_30(two, in_i, j30, flags_j30);
+assign j01 = j30;
+fp_mul j_11(two, in_w, j11, flags_j11);
+assign j21 = j10;
+fp_mul j_31(two, in_j, j31, flags_j31);
+assign j02 = zero;
+fp_mul j_12(minusfour, in_i, j12, flags_j12);
+fp_mul j_22(minusfour, in_j, j22, flags_j22);
+assign j32 = zero;
+
+// form step quaternion (step = (j.transverse).dot(f))
+// step_w
+fp_mul w1(j00, f0, step_w1, flags_stepw1);
+fp_mul w2(j01, f1, step_w2, flags_stepw2);
+fp_mul w3(j02, f2, step_w3, flags_stepw3);
+fp_as w4(step_w1, step_w2, 1'b0, step_w4, flags_stepw4);
+fp_as w5(step_w4, step_w3, 1'b0, step_w5, flags_stepw5);
+// step_i
+fp_mul i1(j10, f0, step_i1, flags_stepi1);
+fp_mul i2(j11, f1, step_i2, flags_stepi2);
+fp_mul i3(j12, f2, step_i3, flags_stepi3);
+fp_as i4(step_i1, step_i2, 1'b0, step_i4, flags_stepi4);
+fp_as i5(step_i4, step_i3, 1'b0, step_i5, flags_stepi5);
+// step_j
+fp_mul j1(j20, f0, step_j1, flags_stepj1);
+fp_mul j2(j21, f1, step_j2, flags_stepj2);
+fp_mul j3(j22, f2, step_j3, flags_stepj3);
+fp_as j4(step_j1, step_j2, 1'b0, step_j4, flags_stepj4);
+fp_as j5(step_j4, step_j3, 1'b0, step_j5, flags_stepj5);
+// step_k
+fp_mul k1(j30, f0, step_k1, flags_stepk1);
+fp_mul k2(j31, f1, step_k2, flags_stepk2);
+fp_mul k3(j32, f2, step_k3, flags_stepk3);
+fp_as k4(step_k1, step_k2, 1'b0, step_k4, flags_stepk4);
+fp_as k5(step_k4, step_k3, 1'b0, step_k5, flags_stepk5);
+
+// normalise step quaternion
+normalise_quat step_norm(step_w5, step_i5, step_j5, step_k5, step_w, step_i, step_j, step_k);
+
+// compute rate of change (qdot)
+mult_quat qdot1(in_w, in_i, in_j, in_k, zero, gyro_x, gyro_y, gyro_z, qdot_w1, qdot_i1, qdot_j1, qdot_k1);
+multscalar_quat qdot2(qdot_w1, qdot_i1, qdot_j1, qdot_k1, half, qdot_w2, qdot_i2, qdot_j2, qdot_k2);
+multscalar_quat qdot3(step_w, step_i, step_j, step_k, beta, qdot_w3, qdot_i3, qdot_j3, qdot_k3);
+addsub_quat qdot4(qdot_w2, qdot_i2, qdot_j2, qdot_k2, qdot_w3, qdot_i3, qdot_j3, qdot_k3, 1'b1, qdot_w, qdot_i, qdot_j, qdot_k);
+
+// integrate to get result quaternion and normalise for output
+multscalar_quat out1(qdot_w, qdot_i, qdot_j, qdot_k, samplePeriod, out_w1, out_i1, out_j1, out_k1);
+addsub_quat out2(in_w, in_i, in_j, in_k, out_w1, out_i1, out_j1, out_k1, 1'b0, out_w2, out_i2, out_j2, out_k2);
+normalise_quat out3(out_w2, out_i2, out_j2, out_k2, out_w, out_i, out_j, out_k);
+
+endmodule
