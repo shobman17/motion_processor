@@ -1,0 +1,186 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dC:/Users/shobh/OneDrive/Desktop/EE705/motion_processor/simulation/modelsim
+vaddsub_quat
+Z1 !s110 1714938104
+!i10b 1
+!s100 bDF3jUldWe<W5;o]Fh[Fl1
+I4jQIb`7<WflD<4JGQJ72:2
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+R0
+Z3 w1714937773
+Z4 8C:/Users/shobh/OneDrive/Desktop/EE705/motion_processor/quaternion_lib.v
+Z5 FC:/Users/shobh/OneDrive/Desktop/EE705/motion_processor/quaternion_lib.v
+L0 94
+Z6 OV;L;10.5b;63
+r1
+!s85 0
+31
+Z7 !s108 1714938104.000000
+Z8 !s107 C:/Users/shobh/OneDrive/Desktop/EE705/motion_processor/quaternion_lib.v|
+Z9 !s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/shobh/OneDrive/Desktop/EE705/motion_processor|C:/Users/shobh/OneDrive/Desktop/EE705/motion_processor/quaternion_lib.v|
+!i113 1
+Z10 o-vlog01compat -work work
+Z11 !s92 -vlog01compat -work work +incdir+C:/Users/shobh/OneDrive/Desktop/EE705/motion_processor
+Z12 tCvgOpt 0
+vfp_as
+Z13 !s110 1714938105
+!i10b 1
+!s100 gNY:nMbPaiKzn;zE;ElaQ3
+IO=W;0fhPcWiC0dHgcCE6O2
+R2
+R0
+w1714929055
+8C:/Users/shobh/OneDrive/Desktop/EE705/motion_processor/fp_as.v
+FC:/Users/shobh/OneDrive/Desktop/EE705/motion_processor/fp_as.v
+L0 3
+R6
+r1
+!s85 0
+31
+Z14 !s108 1714938105.000000
+!s107 C:/Users/shobh/OneDrive/Desktop/EE705/motion_processor/fp_as.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/shobh/OneDrive/Desktop/EE705/motion_processor|C:/Users/shobh/OneDrive/Desktop/EE705/motion_processor/fp_as.v|
+!i113 1
+R10
+R11
+R12
+vfp_invsqrt
+R13
+!i10b 1
+!s100 dDL[i2?a<SDjH1ola>?VB1
+IJI4U4baIQ<lUYjNKOK=W83
+R2
+R0
+w1714938072
+8C:/Users/shobh/OneDrive/Desktop/EE705/motion_processor/fp_invsqrt.v
+FC:/Users/shobh/OneDrive/Desktop/EE705/motion_processor/fp_invsqrt.v
+L0 3
+R6
+r1
+!s85 0
+31
+R14
+!s107 C:/Users/shobh/OneDrive/Desktop/EE705/motion_processor/fp_invsqrt.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/shobh/OneDrive/Desktop/EE705/motion_processor|C:/Users/shobh/OneDrive/Desktop/EE705/motion_processor/fp_invsqrt.v|
+!i113 1
+R10
+R11
+R12
+vfp_mul
+R1
+!i10b 1
+!s100 CzzcS2cSDAh9K[BMP:EQR2
+Ia4iPVS@CnhdI?2cdNibgY2
+R2
+R0
+w1714930415
+8C:/Users/shobh/OneDrive/Desktop/EE705/motion_processor/fp_mul.v
+FC:/Users/shobh/OneDrive/Desktop/EE705/motion_processor/fp_mul.v
+L0 3
+R6
+r1
+!s85 0
+31
+R7
+!s107 C:/Users/shobh/OneDrive/Desktop/EE705/motion_processor/fp_mul.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/shobh/OneDrive/Desktop/EE705/motion_processor|C:/Users/shobh/OneDrive/Desktop/EE705/motion_processor/fp_mul.v|
+!i113 1
+R10
+R11
+R12
+vmult_quat
+R1
+!i10b 1
+!s100 g=]RAbEfbP<J:g9LKNgCn2
+I[gz;EeQiX]lPZBbeo@2YI2
+R2
+R0
+R3
+R4
+R5
+L0 44
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 1
+R10
+R11
+R12
+vmultscalar_quat
+R1
+!i10b 1
+!s100 <4LW8P]S?IEfWZ:Va`;Il2
+Ilg48F92^i07]c7oJG91X60
+R2
+R0
+R3
+R4
+R5
+L0 112
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 1
+R10
+R11
+R12
+vnormalise_quat
+R1
+!i10b 1
+!s100 TNWb9`[dzoFNzg<AgYZ5O3
+I6Zj463PDCPCeXm9l=`99T2
+R2
+R0
+R3
+R4
+R5
+L0 8
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 1
+R10
+R11
+R12
+vnormalise_quat_tb
+R13
+!i10b 1
+!s100 Fe0F>Bg`4F8>29[bLk5FC3
+IHJdZk5QZe3U28n]_KA:bb1
+R2
+R0
+w1714937959
+8C:/Users/shobh/OneDrive/Desktop/EE705/motion_processor/normalise_tb.v
+FC:/Users/shobh/OneDrive/Desktop/EE705/motion_processor/normalise_tb.v
+L0 4
+R6
+r1
+!s85 0
+31
+R14
+!s107 C:/Users/shobh/OneDrive/Desktop/EE705/motion_processor/normalise_tb.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/shobh/OneDrive/Desktop/EE705/motion_processor|C:/Users/shobh/OneDrive/Desktop/EE705/motion_processor/normalise_tb.v|
+!i113 1
+R10
+R11
+R12

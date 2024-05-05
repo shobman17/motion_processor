@@ -1,109 +1,46 @@
 `timescale 1ns / 1ps
 
-module fp_mul(a, b, p, pFlags);
-  parameter NEXP = 5;
-  parameter NSIG = 10;
-  input [NEXP+NSIG:0] a, b;
-  output [NEXP+NSIG:0] p;
-  `include "flags.vh"
-  output [NTYPES-1:0] pFlags;
-  reg [NTYPES-1:0] pFlags;
-
-  wire signed [NEXP+1:0] aExp, bExp;
-  reg signed [NEXP+1:0] pExp, t1Exp, t2Exp;
-  wire [NSIG:0] aSig, bSig;
-  reg [NSIG:0] pSig, tSig;
-
-  reg [NEXP+NSIG:0] pTmp;
-
-  wire [2*NSIG+1:0] rawSignificand;
-
-  wire [NTYPES-1:0] aFlags, bFlags;
-
-  reg pSign;
-
-  fp_class #(NEXP,NSIG) aClass(a, aExp, aSig, aFlags);
-  fp_class #(NEXP,NSIG) bClass(b, bExp, bSig, bFlags);
-
-  assign rawSignificand = aSig * bSig;
-
-  always @(*)
-  begin
-
-    pTmp = {pSign, {NEXP{1'b1}}, 1'b0, {NSIG-1{1'b1}}};  
-    pFlags = 6'b000000;
-
-    if ((aFlags[SNAN] | bFlags[SNAN]) == 1'b1)
-      begin
-        pTmp = aFlags[SNAN] == 1'b1 ? a : b;
-        pFlags[SNAN] = 1;
-      end
-    else if ((aFlags[QNAN] | bFlags[QNAN]) == 1'b1)
-      begin
-        pTmp = aFlags[QNAN] == 1'b1 ? a : b;
-        pFlags[QNAN] = 1;
-      end
-    else if ((aFlags[INFINITY] | bFlags[INFINITY]) == 1'b1)
-      begin
-        if ((aFlags[ZERO] | bFlags[ZERO]) == 1'b1)
-          begin
-            pTmp = {pSign, {NEXP{1'b1}}, 1'b1, {NSIG-1{1'b0}}}; // qNaN
-            pFlags[QNAN] = 1;
-          end
-        else
-          begin
-            pTmp = {pSign, {NEXP{1'b1}}, {NSIG{1'b0}}};
-            pFlags[INFINITY] = 1;
-          end
-      end
-    else if ((aFlags[ZERO] | bFlags[ZERO]) == 1'b1 ||
-             (aFlags[SUBNORMAL] & bFlags[SUBNORMAL]) == 1'b1)
-      begin
-        pTmp = {pSign, {NEXP+NSIG{1'b0}}};
-        pFlags[ZERO] = 1;
-      end
-    else 
-      begin
-        t1Exp = aExp + bExp;
-
-        if (rawSignificand[2*NSIG+1] == 1'b1)
-          begin
-            tSig = rawSignificand[2*NSIG+1:NSIG+1];
-            t2Exp = t1Exp + 1;
-          end
-        else
-          begin
-            tSig = rawSignificand[2*NSIG:NSIG];
-            t2Exp = t1Exp;
-          end
-
-        if (t2Exp < (EMIN - NSIG))  
-          begin                     
-            pTmp = {pSign, {NEXP+NSIG{1'b0}}};
-            pFlags[ZERO] = 1;
-          end
-        else if (t2Exp < EMIN) // Subnormal
-          begin
-            pSig = tSig >> (EMIN - t2Exp);
-           
-            pTmp = {pSign, {NEXP{1'b0}}, pSig[NSIG-1:0]};
-            pFlags[SUBNORMAL] = 1;
-          end
-        else if (t2Exp > EMAX) // Infinity
-          begin
-            pTmp = {pSign, {NEXP{1'b1}}, {NSIG{1'b0}}};
-            pFlags[INFINITY] = 1;
-          end
-        else // Normal
-          begin
-            pExp = t2Exp + BIAS;
-            pSig = tSig;
-            pTmp = {pSign, pExp[NEXP-1:0], pSig[NSIG-1:0]};
-	    pFlags[NORMAL] = 1;
-          end
-      end 
-  end
-
-  assign p = pTmp;
+module fp_mul #(
+	//Parameterized values
+	parameter Q = 7,
+	parameter N = 16
+	)
+	(
+	 input			[N-1:0]	i_multiplicand,
+	 input			[N-1:0]	i_multiplier,
+	 output			[N-1:0]	o_result,
+	 output	reg				ovr
+	 );
+	 
+	 //	The underlying assumption, here, is that both fixed-point values are of the same length (N,Q)
+	 //		Because of this, the results will be of length N+N = 2N bits....
+	 //		This also simplifies the hand-back of results, as the binimal point 
+	 //		will always be in the same location...
+	
+	reg [2*N-1:0]	r_result;		//	Multiplication by 2 values of N bits requires a 
+											//		register that is N+N = 2N deep...
+	reg [N-1:0]		r_RetVal;
+	
+//--------------------------------------------------------------------------------
+	assign o_result = r_RetVal;	//	Only handing back the same number of bits as we received...
+											//		with fixed point in same location...
+	
+//---------------------------------------------------------------------------------
+	always @(i_multiplicand, i_multiplier)	begin						//	Do the multiply any time the inputs change
+		r_result <= i_multiplicand[N-2:0] * i_multiplier[N-2:0];	//	Removing the sign bits from the multiply - that 
+																					//		would introduce *big* errors	
+		end
+	
+		//	This always block will throw a warning, as it uses a & b, but only acts on changes in result...
+	always @(r_result) begin													//	Any time the result changes, we need to recompute the sign bit,
+		r_RetVal[N-1] <= i_multiplicand[N-1] ^ i_multiplier[N-1];	//		which is the XOR of the input sign bits...  (you do the truth table...)
+		r_RetVal[N-2:0] <= r_result[N-2+Q:Q];								//	And we also need to push the proper N bits of result up to 
+																						//		the calling entity...
+		if (r_result[2*N-2:N-1+Q] > 0) begin										// And finally, we need to check for an overflow
+			ovr <= 1'b1;
+		end else begin
+			ovr <= 1'b0;
+		end
+	end
 
 endmodule

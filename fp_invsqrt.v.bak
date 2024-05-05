@@ -1,0 +1,70 @@
+
+
+localparam [31:0] fixedShift = 7; // Left shift factor for fixed point (i.e. how many fractional bits do we have)
+localparam signed [31:0] onePointFive = 32'sh00006000; // 1.5f in fixed point
+
+// Fixed-point mul (40-bit internal precision)
+
+function automatic signed [31:0] FixedMul;
+	input signed [31:0] x;
+	input signed [31:0] y;
+	begin
+		// Sign-extend out to 40 bits and then truncate again afterwards
+		FixedMul = 32'($signed({{8{x[31]}}, x} * {{8{y[31]}}, y}) >>> fixedShift);
+	end
+endfunction
+
+// Fast fixed-point square root
+
+function automatic signed [31:0] FixedSqrt;
+	input signed [31:0] sqrtIn; // Input
+	reg signed [31:0] sqrtFirstGuess; // First guess (table-based)
+	reg signed [31:0] sqrtIntermediate; // Result of first Newton iteration
+	reg signed [31:0] sqrtRcpResult; // Result of second Newton iteration
+	begin	
+		// First-guess lookup based on number of leading zeroes
+		
+		if (sqrtIn[30]) sqrtFirstGuess = 32'sh00000034;
+		else if (sqrtIn[29]) sqrtFirstGuess = 32'sh00000049;
+		else if (sqrtIn[28]) sqrtFirstGuess = 32'sh00000068;
+		else if (sqrtIn[27]) sqrtFirstGuess = 32'sh00000093;
+		else if (sqrtIn[26]) sqrtFirstGuess = 32'sh000000d1;
+		else if (sqrtIn[25]) sqrtFirstGuess = 32'sh00000127;
+		else if (sqrtIn[24]) sqrtFirstGuess = 32'sh000001a2;
+		else if (sqrtIn[23]) sqrtFirstGuess = 32'sh0000024f;
+		else if (sqrtIn[22]) sqrtFirstGuess = 32'sh00000344;
+		else if (sqrtIn[21]) sqrtFirstGuess = 32'sh0000049e;
+		else if (sqrtIn[20]) sqrtFirstGuess = 32'sh00000688;
+		else if (sqrtIn[19]) sqrtFirstGuess = 32'sh0000093c;
+		else if (sqrtIn[18]) sqrtFirstGuess = 32'sh00000d10;
+		else if (sqrtIn[17]) sqrtFirstGuess = 32'sh00001279;
+		else if (sqrtIn[16]) sqrtFirstGuess = 32'sh00001a20;
+		else if (sqrtIn[15]) sqrtFirstGuess = 32'sh000024f3;
+		else if (sqrtIn[14]) sqrtFirstGuess = 32'sh00003441;
+		else if (sqrtIn[13]) sqrtFirstGuess = 32'sh000049e6;
+		else if (sqrtIn[12]) sqrtFirstGuess = 32'sh00006882;
+		else if (sqrtIn[11]) sqrtFirstGuess = 32'sh000093cd;
+		else if (sqrtIn[10]) sqrtFirstGuess = 32'sh0000d105;
+		else if (sqrtIn[9]) sqrtFirstGuess = 32'sh0001279a;
+		else if (sqrtIn[8]) sqrtFirstGuess = 32'sh0001a20b;
+		else if (sqrtIn[7]) sqrtFirstGuess = 32'sh00024f34;
+		else if (sqrtIn[6]) sqrtFirstGuess = 32'sh00034417;
+		else if (sqrtIn[5]) sqrtFirstGuess = 32'sh00049e69;
+		else if (sqrtIn[4]) sqrtFirstGuess = 32'sh0006882f;
+		else if (sqrtIn[3]) sqrtFirstGuess = 32'sh00093cd3;
+		else if (sqrtIn[2]) sqrtFirstGuess = 32'sh000d105e;
+		else if (sqrtIn[1]) sqrtFirstGuess = 32'sh001279a7;
+		else sqrtFirstGuess = 32'sh00200000;
+
+		// Newton's method - x(n+1) =(x(n) * (1.5 - (val * 0.5f * x(n)^2))
+		
+		// First iteration	
+		sqrtIntermediate = FixedMul(sqrtFirstGuess, onePointFive - FixedMul(sqrtIn >>> 1, FixedMul(sqrtFirstGuess, sqrtFirstGuess)));
+		
+		// Second iteration
+		sqrtRcpResult = FixedMul(sqrtIntermediate, onePointFive - FixedMul(sqrtIn >>> 1, FixedMul(sqrtIntermediate, sqrtIntermediate)));
+		
+		// Convert 1/sqrt(x) to sqrt(x)
+		FixedSqrt = FixedMul(sqrtRcpResult, sqrtIn);
+	end
+endfunction

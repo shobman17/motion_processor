@@ -1,0 +1,17 @@
+module madgwick_tb;
+
+// port definitions
+reg[15:0] in_w, in_i, in_j, in_k; // initial quaternion
+reg[15:0] accel_x, accel_y, accel_z; // any units since it will be normalized 
+reg[15:0] gyro_x, gyro_y, gyro_z; // should be in rad/s
+reg[15:0] beta, samplePeriod; // to be defined by NIOS controller
+wire[15:0] out_w, out_i, out_j, out_k; // output quaternion
+
+madgwick m0 (in_w, in_i, in_j, in_k, accel_x, accel_y, accel_z, gyro_x, gyro_y, gyro_z, beta, samplePeriod, out_w, out_i, out_j, out_k);
+
+initial begin
+	in_w = 16'b0000000010000000;
+	in_i = 16'b0;
+	in_j = 16'b0;
+	in_k = 16'b0;
+	

@@ -44,7 +44,7 @@
 
 module motion_nios_mm_interconnect_0_router_default_decode
   #(
-     parameter DEFAULT_CHANNEL = 2,
+     parameter DEFAULT_CHANNEL = 1,
                DEFAULT_WR_CHANNEL = -1,
                DEFAULT_RD_CHANNEL = -1,
                DEFAULT_DESTID = 1 
@@ -193,7 +193,7 @@ module motion_nios_mm_interconnect_0_router
 
     // ( 0x40000 .. 0x80000 )
     if ( {address[RG:PAD0],{PAD0{1'b0}}} == 20'h40000   ) begin
-            src_channel = 4'b0100;
+            src_channel = 4'b0010;
             src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 1;
     end
 
@@ -205,7 +205,7 @@ module motion_nios_mm_interconnect_0_router
 
     // ( 0x90800 .. 0x91000 )
     if ( {address[RG:PAD2],{PAD2{1'b0}}} == 20'h90800   ) begin
-            src_channel = 4'b0010;
+            src_channel = 4'b0100;
             src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 2;
     end
 

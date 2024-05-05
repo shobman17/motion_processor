@@ -1,0 +1,16 @@
+Fitter Status : Successful - Mon May 06 02:10:57 2024
+Quartus Prime Version : 18.1.0 Build 625 09/12/2018 SJ Lite Edition
+Revision Name : madgwick_processor
+Top-level Entity Name : motion_nios
+Family : Cyclone IV E
+Device : EP4CE22F17C6
+Timing Models : Final
+Total logic elements : 7,324 / 22,320 ( 33 % )
+    Total combinational functions : 7,154 / 22,320 ( 32 % )
+    Dedicated logic registers : 1,177 / 22,320 ( 5 % )
+Total registers : 1177
+Total pins : 2 / 154 ( 1 % )
+Total virtual pins : 0
+Total memory bits : 273,408 / 608,256 ( 45 % )
+Embedded Multiplier 9-bit elements : 132 / 132 ( 100 % )
+Total PLLs : 0 / 4 ( 0 % )
