@@ -17,27 +17,11 @@
          type = "int";
       }
    }
-   element jtag_uart_0
-   {
-      datum _sortIndex
-      {
-         value = "3";
-         type = "int";
-      }
-   }
-   element jtag_uart_0.avalon_jtag_slave
-   {
-      datum baseAddress
-      {
-         value = "593928";
-         type = "String";
-      }
-   }
    element madgwick_filter_0
    {
       datum _sortIndex
       {
-         value = "4";
+         value = "3";
          type = "int";
       }
    }
@@ -111,25 +95,6 @@
   <parameter name="resetSynchronousEdges" value="NONE" />
  </module>
  <module
-   name="jtag_uart_0"
-   kind="altera_avalon_jtag_uart"
-   version="18.1"
-   enabled="1">
-  <parameter name="allowMultipleConnections" value="false" />
-  <parameter name="avalonSpec" value="2.0" />
-  <parameter name="clkFreq" value="50000000" />
-  <parameter name="hubInstanceID" value="0" />
-  <parameter name="readBufferDepth" value="64" />
-  <parameter name="readIRQThreshold" value="8" />
-  <parameter name="simInputCharacterStream" value="" />
-  <parameter name="simInteractiveOptions">NO_INTERACTIVE_WINDOWS</parameter>
-  <parameter name="useRegistersForReadBuffer" value="false" />
-  <parameter name="useRegistersForWriteBuffer" value="false" />
-  <parameter name="useRelativePathForSimFile" value="false" />
-  <parameter name="writeBufferDepth" value="64" />
-  <parameter name="writeIRQThreshold" value="8" />
- </module>
- <module
    name="madgwick_filter_0"
    kind="madgwick_filter"
    version="1.0"
@@ -158,7 +123,7 @@
   <parameter name="dataAddrWidth" value="20" />
   <parameter name="dataMasterHighPerformanceAddrWidth" value="1" />
   <parameter name="dataMasterHighPerformanceMapParam" value="" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='madgwick_filter_0.avalon_slave_0' start='0x40000' end='0x80000' type='madgwick_filter.avalon_slave_0' /><slave name='onchip_memory2_0.s1' start='0x88000' end='0x90000' type='altera_avalon_onchip_memory2.s1' /><slave name='nios2_gen2_0.debug_mem_slave' start='0x90800' end='0x91000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x91008' end='0x91010' type='altera_avalon_jtag_uart.avalon_jtag_slave' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='madgwick_filter_0.avalon_slave_0' start='0x40000' end='0x80000' type='madgwick_filter.avalon_slave_0' /><slave name='onchip_memory2_0.s1' start='0x88000' end='0x90000' type='altera_avalon_onchip_memory2.s1' /><slave name='nios2_gen2_0.debug_mem_slave' start='0x90800' end='0x91000' type='altera_nios2_gen2.debug_mem_slave' /></address-map>]]></parameter>
   <parameter name="data_master_high_performance_paddr_base" value="0" />
   <parameter name="data_master_high_performance_paddr_size" value="0" />
   <parameter name="data_master_paddr_base" value="0" />
@@ -197,14 +162,14 @@
   <parameter name="icache_tagramBlockType" value="Automatic" />
   <parameter name="impl" value="Tiny" />
   <parameter name="instAddrWidth" value="20" />
-  <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='madgwick_filter_0.avalon_slave_0' start='0x40000' end='0x80000' type='madgwick_filter.avalon_slave_0' /><slave name='onchip_memory2_0.s1' start='0x88000' end='0x90000' type='altera_avalon_onchip_memory2.s1' /><slave name='nios2_gen2_0.debug_mem_slave' start='0x90800' end='0x91000' type='altera_nios2_gen2.debug_mem_slave' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x91008' end='0x91010' type='altera_avalon_jtag_uart.avalon_jtag_slave' /></address-map>]]></parameter>
+  <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='madgwick_filter_0.avalon_slave_0' start='0x40000' end='0x80000' type='madgwick_filter.avalon_slave_0' /><slave name='onchip_memory2_0.s1' start='0x88000' end='0x90000' type='altera_avalon_onchip_memory2.s1' /><slave name='nios2_gen2_0.debug_mem_slave' start='0x90800' end='0x91000' type='altera_nios2_gen2.debug_mem_slave' /></address-map>]]></parameter>
   <parameter name="instructionMasterHighPerformanceAddrWidth" value="1" />
   <parameter name="instructionMasterHighPerformanceMapParam" value="" />
   <parameter name="instruction_master_high_performance_paddr_base" value="0" />
   <parameter name="instruction_master_high_performance_paddr_size" value="0" />
   <parameter name="instruction_master_paddr_base" value="0" />
   <parameter name="instruction_master_paddr_size" value="0" />
-  <parameter name="internalIrqMaskSystemInfo" value="1" />
+  <parameter name="internalIrqMaskSystemInfo" value="0" />
   <parameter name="io_regionbase" value="0" />
   <parameter name="io_regionsize" value="0" />
   <parameter name="master_addr_map" value="false" />
@@ -352,15 +317,6 @@
    kind="avalon"
    version="18.1"
    start="nios2_gen2_0.data_master"
-   end="jtag_uart_0.avalon_jtag_slave">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00091008" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="18.1"
-   start="nios2_gen2_0.data_master"
    end="madgwick_filter_0.avalon_slave_0">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x00040000" />
@@ -382,15 +338,6 @@
    end="onchip_memory2_0.s1">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x00088000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="18.1"
-   start="nios2_gen2_0.instruction_master"
-   end="jtag_uart_0.avalon_jtag_slave">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00091008" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -421,7 +368,6 @@
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection kind="clock" version="18.1" start="clk_0.clk" end="nios2_gen2_0.clk" />
- <connection kind="clock" version="18.1" start="clk_0.clk" end="jtag_uart_0.clk" />
  <connection
    kind="clock"
    version="18.1"
@@ -433,22 +379,10 @@
    start="clk_0.clk"
    end="madgwick_filter_0.clock" />
  <connection
-   kind="interrupt"
-   version="18.1"
-   start="nios2_gen2_0.irq"
-   end="jtag_uart_0.irq">
-  <parameter name="irqNumber" value="0" />
- </connection>
- <connection
    kind="reset"
    version="18.1"
    start="clk_0.clk_reset"
    end="nios2_gen2_0.reset" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="clk_0.clk_reset"
-   end="jtag_uart_0.reset" />
  <connection
    kind="reset"
    version="18.1"
@@ -464,11 +398,6 @@
    version="18.1"
    start="nios2_gen2_0.debug_reset_request"
    end="nios2_gen2_0.reset" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="nios2_gen2_0.debug_reset_request"
-   end="jtag_uart_0.reset" />
  <connection
    kind="reset"
    version="18.1"

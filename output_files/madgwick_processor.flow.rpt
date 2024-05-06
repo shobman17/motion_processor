@@ -1,5 +1,5 @@
 Flow report for madgwick_processor
-Mon May 06 02:11:20 2024
+Mon May 06 10:29:05 2024
 Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
 
 
@@ -40,20 +40,20 @@ refer to the applicable agreement for further details.
 +----------------------------------------------------------------------------------+
 ; Flow Summary                                                                     ;
 +------------------------------------+---------------------------------------------+
-; Flow Status                        ; Successful - Mon May 06 02:11:20 2024       ;
+; Flow Status                        ; Successful - Mon May 06 10:29:05 2024       ;
 ; Quartus Prime Version              ; 18.1.0 Build 625 09/12/2018 SJ Lite Edition ;
 ; Revision Name                      ; madgwick_processor                          ;
 ; Top-level Entity Name              ; motion_nios                                 ;
 ; Family                             ; Cyclone IV E                                ;
 ; Device                             ; EP4CE22F17C6                                ;
 ; Timing Models                      ; Final                                       ;
-; Total logic elements               ; 7,324 / 22,320 ( 33 % )                     ;
-;     Total combinational functions  ; 7,154 / 22,320 ( 32 % )                     ;
-;     Dedicated logic registers      ; 1,177 / 22,320 ( 5 % )                      ;
-; Total registers                    ; 1177                                        ;
+; Total logic elements               ; 7,074 / 22,320 ( 32 % )                     ;
+;     Total combinational functions  ; 6,903 / 22,320 ( 31 % )                     ;
+;     Dedicated logic registers      ; 1,028 / 22,320 ( 5 % )                      ;
+; Total registers                    ; 1028                                        ;
 ; Total pins                         ; 2 / 154 ( 1 % )                             ;
 ; Total virtual pins                 ; 0                                           ;
-; Total memory bits                  ; 273,408 / 608,256 ( 45 % )                  ;
+; Total memory bits                  ; 272,384 / 608,256 ( 45 % )                  ;
 ; Embedded Multiplier 9-bit elements ; 132 / 132 ( 100 % )                         ;
 ; Total PLLs                         ; 0 / 4 ( 0 % )                               ;
 +------------------------------------+---------------------------------------------+
@@ -64,46 +64,52 @@ refer to the applicable agreement for further details.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 05/06/2024 02:09:11 ;
+; Start date & time ; 05/06/2024 10:27:04 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; madgwick_processor  ;
 +-------------------+---------------------+
 
 
-+-----------------------------------------------------------------------------------------------------------------------------------+
-; Flow Non-Default Global Settings                                                                                                  ;
-+--------------------------------------+----------------------------------------+--------------------+-------------+----------------+
-; Assignment Name                      ; Value                                  ; Default Value      ; Entity Name ; Section Id     ;
-+--------------------------------------+----------------------------------------+--------------------+-------------+----------------+
-; COMPILER_SIGNATURE_ID                ; 79846627254421.171494155002444         ; --                 ; --          ; --             ;
-; EDA_DESIGN_INSTANCE_NAME             ; normalise_quat_tb                      ; --                 ; --          ; test_normalise ;
-; EDA_DESIGN_INSTANCE_NAME             ; dut                                    ; --                 ; --          ; test_multquat  ;
-; EDA_DESIGN_INSTANCE_NAME             ; dut                                    ; --                 ; --          ; test_addsub    ;
-; EDA_NATIVELINK_SIMULATION_TEST_BENCH ; test_normalise                         ; --                 ; --          ; eda_simulation ;
-; EDA_OUTPUT_DATA_FORMAT               ; Verilog Hdl                            ; --                 ; --          ; eda_simulation ;
-; EDA_SIMULATION_TOOL                  ; ModelSim-Altera (Verilog)              ; <None>             ; --          ; --             ;
-; EDA_TEST_BENCH_ENABLE_STATUS         ; TEST_BENCH_MODE                        ; --                 ; --          ; eda_simulation ;
-; EDA_TEST_BENCH_FILE                  ; normalise_tb.v                         ; --                 ; --          ; test_normalise ;
-; EDA_TEST_BENCH_FILE                  ; multquat_tb.v                          ; --                 ; --          ; test_multquat  ;
-; EDA_TEST_BENCH_FILE                  ; addsub_tb.v                            ; --                 ; --          ; test_addsub    ;
-; EDA_TEST_BENCH_MODULE_NAME           ; normalise_quat_tb                      ; --                 ; --          ; test_normalise ;
-; EDA_TEST_BENCH_MODULE_NAME           ; multquat_tb                            ; --                 ; --          ; test_multquat  ;
-; EDA_TEST_BENCH_MODULE_NAME           ; addsub_quat_tb                         ; --                 ; --          ; test_addsub    ;
-; EDA_TEST_BENCH_NAME                  ; test_normalise                         ; --                 ; --          ; eda_simulation ;
-; EDA_TEST_BENCH_NAME                  ; test_addsub                            ; --                 ; --          ; eda_simulation ;
-; EDA_TEST_BENCH_NAME                  ; test_multquat                          ; --                 ; --          ; eda_simulation ;
-; EDA_TIME_SCALE                       ; 1 ps                                   ; --                 ; --          ; eda_simulation ;
-; MAX_CORE_JUNCTION_TEMP               ; 85                                     ; --                 ; --          ; --             ;
-; MIN_CORE_JUNCTION_TEMP               ; 0                                      ; --                 ; --          ; --             ;
-; NOMINAL_CORE_SUPPLY_VOLTAGE          ; 1.2V                                   ; --                 ; --          ; --             ;
-; PARTITION_COLOR                      ; -- (Not supported for targeted family) ; --                 ; motion_nios ; Top            ;
-; PARTITION_FITTER_PRESERVATION_LEVEL  ; -- (Not supported for targeted family) ; --                 ; motion_nios ; Top            ;
-; PARTITION_NETLIST_TYPE               ; -- (Not supported for targeted family) ; --                 ; motion_nios ; Top            ;
-; POWER_BOARD_THERMAL_MODEL            ; None (CONSERVATIVE)                    ; --                 ; --          ; --             ;
-; POWER_PRESET_COOLING_SOLUTION        ; 23 MM HEAT SINK WITH 200 LFPM AIRFLOW  ; --                 ; --          ; --             ;
-; PROJECT_OUTPUT_DIRECTORY             ; output_files                           ; --                 ; --          ; --             ;
-; TOP_LEVEL_ENTITY                     ; motion_nios                            ; madgwick_processor ; --          ; --             ;
-+--------------------------------------+----------------------------------------+--------------------+-------------+----------------+
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Flow Non-Default Global Settings                                                                                                                         ;
++--------------------------------------+---------------------------------------------------------------+--------------------+-------------+----------------+
+; Assignment Name                      ; Value                                                         ; Default Value      ; Entity Name ; Section Id     ;
++--------------------------------------+---------------------------------------------------------------+--------------------+-------------+----------------+
+; COMPILER_SIGNATURE_ID                ; 79846627254421.171497142407572                                ; --                 ; --          ; --             ;
+; EDA_DESIGN_INSTANCE_NAME             ; normalise_quat_tb                                             ; --                 ; --          ; test_normalise ;
+; EDA_DESIGN_INSTANCE_NAME             ; dut                                                           ; --                 ; --          ; test_multquat  ;
+; EDA_DESIGN_INSTANCE_NAME             ; dut                                                           ; --                 ; --          ; test_addsub    ;
+; EDA_NATIVELINK_SIMULATION_TEST_BENCH ; test_normalise                                                ; --                 ; --          ; eda_simulation ;
+; EDA_OUTPUT_DATA_FORMAT               ; Verilog Hdl                                                   ; --                 ; --          ; eda_simulation ;
+; EDA_SIMULATION_TOOL                  ; ModelSim-Altera (Verilog)                                     ; <None>             ; --          ; --             ;
+; EDA_TEST_BENCH_ENABLE_STATUS         ; TEST_BENCH_MODE                                               ; --                 ; --          ; eda_simulation ;
+; EDA_TEST_BENCH_FILE                  ; normalise_tb.v                                                ; --                 ; --          ; test_normalise ;
+; EDA_TEST_BENCH_FILE                  ; multquat_tb.v                                                 ; --                 ; --          ; test_multquat  ;
+; EDA_TEST_BENCH_FILE                  ; addsub_tb.v                                                   ; --                 ; --          ; test_addsub    ;
+; EDA_TEST_BENCH_MODULE_NAME           ; normalise_quat_tb                                             ; --                 ; --          ; test_normalise ;
+; EDA_TEST_BENCH_MODULE_NAME           ; multquat_tb                                                   ; --                 ; --          ; test_multquat  ;
+; EDA_TEST_BENCH_MODULE_NAME           ; addsub_quat_tb                                                ; --                 ; --          ; test_addsub    ;
+; EDA_TEST_BENCH_NAME                  ; test_normalise                                                ; --                 ; --          ; eda_simulation ;
+; EDA_TEST_BENCH_NAME                  ; test_addsub                                                   ; --                 ; --          ; eda_simulation ;
+; EDA_TEST_BENCH_NAME                  ; test_multquat                                                 ; --                 ; --          ; eda_simulation ;
+; EDA_TIME_SCALE                       ; 1 ps                                                          ; --                 ; --          ; eda_simulation ;
+; MAX_CORE_JUNCTION_TEMP               ; 85                                                            ; --                 ; --          ; --             ;
+; MIN_CORE_JUNCTION_TEMP               ; 0                                                             ; --                 ; --          ; --             ;
+; MISC_FILE                            ; motion_nios/synthesis/../motion_nios.cmp                      ; --                 ; --          ; --             ;
+; MISC_FILE                            ; motion_nios/synthesis/../../motion_nios.qsys                  ; --                 ; --          ; --             ;
+; NOMINAL_CORE_SUPPLY_VOLTAGE          ; 1.2V                                                          ; --                 ; --          ; --             ;
+; PARTITION_COLOR                      ; -- (Not supported for targeted family)                        ; --                 ; motion_nios ; Top            ;
+; PARTITION_FITTER_PRESERVATION_LEVEL  ; -- (Not supported for targeted family)                        ; --                 ; motion_nios ; Top            ;
+; PARTITION_NETLIST_TYPE               ; -- (Not supported for targeted family)                        ; --                 ; motion_nios ; Top            ;
+; POWER_BOARD_THERMAL_MODEL            ; None (CONSERVATIVE)                                           ; --                 ; --          ; --             ;
+; POWER_PRESET_COOLING_SOLUTION        ; 23 MM HEAT SINK WITH 200 LFPM AIRFLOW                         ; --                 ; --          ; --             ;
+; PROJECT_OUTPUT_DIRECTORY             ; output_files                                                  ; --                 ; --          ; --             ;
+; SLD_FILE                             ; motion_nios/synthesis/motion_nios.debuginfo                   ; --                 ; --          ; --             ;
+; SLD_INFO                             ; QSYS_NAME motion_nios HAS_SOPCINFO 1 GENERATION_ID 1714971361 ; --                 ; motion_nios ; --             ;
+; SOPCINFO_FILE                        ; motion_nios/synthesis/../../motion_nios.sopcinfo              ; --                 ; --          ; --             ;
+; SYNTHESIS_ONLY_QIP                   ; On                                                            ; --                 ; --          ; --             ;
+; TOP_LEVEL_ENTITY                     ; motion_nios                                                   ; madgwick_processor ; --          ; --             ;
++--------------------------------------+---------------------------------------------------------------+--------------------+-------------+----------------+
 
 
 +--------------------------------------------------------------------------------------------------------------------------+
@@ -111,12 +117,12 @@ refer to the applicable agreement for further details.
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name          ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis ; 00:01:15     ; 1.0                     ; 4943 MB             ; 00:00:52                           ;
-; Fitter               ; 00:00:28     ; 1.1                     ; 5600 MB             ; 00:00:15                           ;
-; Assembler            ; 00:00:03     ; 1.0                     ; 4704 MB             ; 00:00:01                           ;
-; Timing Analyzer      ; 00:00:05     ; 1.3                     ; 4847 MB             ; 00:00:03                           ;
-; EDA Netlist Writer   ; 00:00:10     ; 1.0                     ; 4733 MB             ; 00:00:06                           ;
-; Total                ; 00:02:01     ; --                      ; --                  ; 00:01:17                           ;
+; Analysis & Synthesis ; 00:01:09     ; 1.0                     ; 4925 MB             ; 00:00:51                           ;
+; Fitter               ; 00:00:24     ; 1.1                     ; 5611 MB             ; 00:00:19                           ;
+; Assembler            ; 00:00:02     ; 1.0                     ; 4703 MB             ; 00:00:02                           ;
+; Timing Analyzer      ; 00:00:05     ; 1.3                     ; 4846 MB             ; 00:00:03                           ;
+; EDA Netlist Writer   ; 00:00:11     ; 1.0                     ; 4727 MB             ; 00:00:07                           ;
+; Total                ; 00:01:51     ; --                      ; --                  ; 00:01:22                           ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 
